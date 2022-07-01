@@ -18,7 +18,7 @@
 </head>
 <body>
     <?php include('header.php');
-
+          
 
 //Dodatni zadatak//
 
@@ -27,18 +27,23 @@
     $title = $_POST['title'];
     $author = $_POST['author'];
     $body = $_POST['body'];
-    $createdAt = date("Y-m-d h:i");
+    $created_at = date("Y-m-d h:i");
 
     $sql = "INSERT INTO posts (title, body, author, created_at) VALUES ('$title', '$body',
-    '$author', '$createdAt')";
+    '$author', '$created_at')";
 
     $statement = $connection->prepare($sql);
     $statement->execute();
     header("Location:/posts.php");
-}
-
-
-?>
+    }
+    // sql author:
+    // $sql1 = "SELECT id, ime, prezime, pol FROM author";
+    // $statement = $connection->prepare($sql1);
+    // $statement->execute();
+    // $statement->setFetchMode(PDO::FETCH_ASSOC);
+    // $author = $statement->fetchAll();
+  
+    ?>
 
 <form action="create-post.php" method="post">
 
@@ -47,12 +52,18 @@
 
 
     <li style="color:red;"><label for="body">Body</label></li>
-    <li><textarea name="body" id="body" cols="60" rows="10" required placeholder="body" ></textarea></li>
+    <li><textarea name="body" id="body" cols="60" rows="10" placeholder="body" required></textarea></li>
 
 
-    <li style="color:red;"><label for="author">Author</label></li>
-    <li><input type="text" name="author" id="author" placeholder="author" required></li>
-    
+    <li style="color:red;"><label for="author">Select Author</label></li>
+    <select class="<?php echo $author['pol'] ?>" name="author" required>
+        <?php foreach($authors as $author) { ?>
+        <option class="<?php echo $author['pol'] ?>" value="<?php echo $author['id'] ?>">
+        <?php echo ($author['ime']) . ' ' . ($author['prezime']); ?>
+        </option>
+        <?php } ?>
+        </select>
+    <!-- <li><input type="text" name="author" id="author" placeholder="author" required></li> -->
 
     <li><button type="submit" name="submit">Submit</button></li>
 
@@ -64,5 +75,3 @@
 
 </body>
 </html>
-
-
